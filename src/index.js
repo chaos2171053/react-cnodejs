@@ -7,7 +7,7 @@ import { ConnectedRouter, routerReducer, routerMiddleware, } from 'react-router-
 import createHistory from 'history/createHashHistory'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import rootReducer from './reducers/index'
-
+import './styles/index.css';
 
 injectTapEventPlugin();
 
