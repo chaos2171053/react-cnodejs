@@ -15,9 +15,11 @@ const mapDispatchToProps = dispatch => ({
 class App extends Component {
 
     componentWillMount() {
-        const { fetchAccess } = this.props.actions
+        const { fetchAccess,fetchMessage,fetchProfile } = this.props.actions
         const LoadingAction = (accessToken, loginName) => {
             fetchAccess(accessToken)
+            fetchMessage(accessToken)
+            fetchProfile(loginName)
         }
 
         if (window.localStorage.getItem('masterInfo')) {
