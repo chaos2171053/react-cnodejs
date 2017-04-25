@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import {routerReducer} from 'react-router-redux';
-import status from './status';
+import login from './login'
+
+
 const rootReducer = combineReducers({
-   status:status,
+   login
 });
 
 export default rootReducer;
