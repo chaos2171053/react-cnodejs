@@ -1,4 +1,5 @@
 import 'core-js/fn/object/assign';
+import 'babel-polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
@@ -11,6 +12,9 @@ import './styles/index.css';
 // import routes from './routes/routes';
 import { Switch } from 'react-router-dom'
 import { Route } from 'react-router'
+import { createLogger } from 'redux-logger'
+// import logger from 'redux-logger'
+import thunk from 'redux-thunk';
 import App from './containers/App'
 injectTapEventPlugin();
 
@@ -24,7 +28,7 @@ if (!(window.__REDUX_DEVTOOLS_EXTENSION__ || window.__REDUX_DEVTOOLS_EXTENSION__
             rootReducer,
             router: routerReducer
         }),
-        applyMiddleware(middleware)
+        applyMiddleware(middleware,thunk, createLogger())
     )
 } else {
     store = createStore(
@@ -32,7 +36,7 @@ if (!(window.__REDUX_DEVTOOLS_EXTENSION__ || window.__REDUX_DEVTOOLS_EXTENSION__
             rootReducer,
             router: routerReducer
         }),
-        compose(applyMiddleware(middleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+        compose(applyMiddleware(middleware,thunk, createLogger()), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
     )
 }
 

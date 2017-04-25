@@ -1,14 +1,14 @@
 import React, { Component} from 'react'
 import PropTypes from 'prop-types'; 
 class App extends Component {
-//     render() {
-//       return (
-//           <div>{this.props.children}</div>
-//       )
-//   }
+    
+    componentWillMount() {
+        
+    }
+    
    render() {
       return (
-          <div>{this.props.children}</div>
+          <div>666666</div>
       )
   }
 }
