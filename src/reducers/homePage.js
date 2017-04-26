@@ -50,7 +50,7 @@ const tabData = (state = {}, action) => {
     }
 }
 
-const homePage = (stata = { selectedTab: 'all', tabData: {} }, action) => {
+const homePage = (state = { selectedTab: 'all', tabData: {} }, action) => {
     if (state) {
         const sTab = selectedTab(state.selectedTab, action)
         const tData = tabData(state.tabData, action)
@@ -62,3 +62,5 @@ const homePage = (stata = { selectedTab: 'all', tabData: {} }, action) => {
     }
     return state
 }
+
+export default homePage

@@ -2,12 +2,12 @@ import {
     LOGIN_SUCCESS, LOGOUT, LOGIN_FAILED,
 } from '../constants/actionTypes'
 
-const login = (state = { succed: false }, action) => {
+const login = (state = { succeed: false }, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
             return {
                 ...state,
-                succed: true,
+                succeed: true,
                 loginName: action.loginName,
                 loginId: action.loginId,
                 accessToken: action.accessToken
