@@ -37,11 +37,12 @@ class App extends Component {
 
     render() {
         return (
-            <div>666666</div>
+            <div>{this.props.children}</div>
         )
     }
 }
 App.propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
+    // actions:PropTypes.object.isRequired
 };
 export default App

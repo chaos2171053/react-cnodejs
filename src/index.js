@@ -9,13 +9,12 @@ import createHistory from 'history/createHashHistory'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import rootReducer from './reducers/index'
 import './styles/index.css';
-// import routes from './routes/routes';
 import { Switch } from 'react-router-dom'
 import { Route } from 'react-router'
 import { createLogger } from 'redux-logger'
-// import logger from 'redux-logger'
 import thunk from 'redux-thunk';
-import App from './containers/App'
+import { App, HomePage } from './containers/index'
+
 injectTapEventPlugin();
 
 const history = createHistory()
@@ -28,7 +27,7 @@ if (!(window.__REDUX_DEVTOOLS_EXTENSION__ || window.__REDUX_DEVTOOLS_EXTENSION__
             rootReducer,
             router: routerReducer
         }),
-        applyMiddleware(middleware,thunk, createLogger())
+        applyMiddleware(middleware, thunk, createLogger())
     )
 } else {
     store = createStore(
@@ -36,20 +35,33 @@ if (!(window.__REDUX_DEVTOOLS_EXTENSION__ || window.__REDUX_DEVTOOLS_EXTENSION__
             rootReducer,
             router: routerReducer
         }),
-        compose(applyMiddleware(middleware,thunk, createLogger()), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+        compose(applyMiddleware(middleware, thunk, createLogger()), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
     )
 }
 
 
 
+// ReactDOM.render(
+//     <Provider store={store}>
+//         <ConnectedRouter history={history}>
+//             <Switch>
+//                 <Route exact path="/" component={App}/>
+//             </Switch>
+//         </ConnectedRouter>
+//     </Provider>,
+//     document.getElementById('app'));
+
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <Switch>
-                <Route exact path="/" component={App}/>
-            </Switch>
+            <App>
+                <Switch>
+                    <Route exact path="/" component={HomePage} />
+                </Switch>
+            </App>
         </ConnectedRouter>
     </Provider>,
     document.getElementById('app'));
+
 
 

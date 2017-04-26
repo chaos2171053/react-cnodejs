@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import {
     LOGIN_SUCCESS, LOGOUT, LOGIN_FAILED,
-    FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE,GET_COLLECTED_TOPICS,
-    RECEIVE_PROFILE
+    FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE, GET_COLLECTED_TOPICS,
+    RECEIVE_PROFILE,REQUEST_TOPICS,RECEIVE_TOPICS
 } from '../constants/actionTypes'
 
 //Login
@@ -102,5 +102,27 @@ export const fetchProfile = (loginName) => {
         fetch(`https://cnodejs.org/api/v1/user/${loginName}`)
             .then(response => response.json())
             .then(json => dispatch(receiveProfile(loginName, json.data)))
+    }
+}
+
+// HomePage
+const requestTopics = tab =>({
+    type:REQUEST_TOPICS,
+    tab
+})
+
+const receiveTopics = (tab,topics,page,limit) =>({
+    types:RECEIVE_TOPICS,
+    tab,
+    topics,
+    page,
+    limit
+})
+export const fetchTopics = (tab, page = 1, limit = 20) => {
+    return dispatch => {
+        dispatch(requestTopics(tab))
+        fetch(`https://cnodejs.org/api/v1/topics?tab=${tab}&page=${page}&limit=${limit}`)
+            .then(response => response.json())
+            .then(json => dispatch(receiveTopics(tab, json.data, page, limit)))
     }
 }
