@@ -4,13 +4,13 @@ import { fetchTopics } from '../actions/actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../actions/actions'
-import Snackbar from '../components/common/Snackbar.js'
-
+import Snackbar from '../components/common/Snackbar'
+import Header from '../components/Homepage/Header/Header'
 const mapStateToProps = (state) => {
-    const { homePage, login, profile, } = state.rootReducer
+    const { homePage, login, profile, message,article} = state.rootReducer
     const { selectedTab, tabData } = homePage
     const { isFetching, page, scrollT, topics } = tabData[selectedTab] || { isFetching: false, page: 0, scrollT: 0, topics: [] }
-    return { isFetching, page, scrollT, topics, selectedTab, tabData, login, profile, }
+    return { isFetching, page, scrollT, topics, selectedTab, tabData, login, profile,article }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -25,10 +25,35 @@ class HomePage extends Component {
         super(props)
         this.state = {
             fadeIn: true,
-            isFreshing: false,
+            openDrawer: false,
             openSnackbar: false,
+            isFreshing: false,
+            fixedTop: 0,
+            scrollT: 0
         }
     }
+    tabs = [
+      {
+          title: '全部',
+          filter: 'all',
+      },
+      {
+          title: '精华',
+          filter: 'good',
+      },
+      {
+          title: '分享',
+          filter: 'share',
+      },
+      {
+          title: '问答',
+          filter: 'ask',
+      },
+      {
+          title: '招聘',
+          filter: 'job',
+      }
+  ]
 
     onRefresh = (next) => {
         if (!this.state.isFreshing) {
@@ -62,10 +87,22 @@ class HomePage extends Component {
         }, 2500)
     }
     render() {
+        const {selectedTab} = this.props
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
                 <Pull zIndex={10000} size={60} max={200} color='#E91E63' onRefresh={this.onRefresh} />
                 <Snackbar isOpened={this.state.openSnackbar} message='刷新成功' />
+                <Header filter={selectedTab} onClick={this.handleClick} toggleDrawer={this.toggleDrawer}
+                    fixedTop={this.state.fixedTop} unreadMessageCount={unreadMessageCount} tabs={this.tabs}>
+                    {this.tabs.map((tab, index) =>
+                        <div key={index}>
+                            {((isFetching && page === 0) || (tab.filter !== selectedTab && !tabData[tab.filter])) && <CircleLoading />}
+                            {tab.filter === selectedTab && <div style={{ opacity: (!isFetching || page >= 1) ? 1 : 0 }}>
+                                <Lists topics={topics} fetchArticle={fetchArticle} dispatch={dispatch} article={article} isFetching={isFetching} />
+                            </div>}
+                        </div>
+                    )}
+                </Header>
             </div>
         )
     }

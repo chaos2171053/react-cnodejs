@@ -4,8 +4,9 @@ import login from './login'
 import message from './message'
 import profile from './profile'
 import homePage from './homePage'
+import article from './article'
 const rootReducer = combineReducers({
-   login,message,profile,homePage
+   login,message,profile,homePage,article
 });
 
 export default rootReducer;

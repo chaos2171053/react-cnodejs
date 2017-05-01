@@ -2,12 +2,13 @@ import fetch from 'isomorphic-fetch'
 import {
     LOGIN_SUCCESS, LOGOUT, LOGIN_FAILED,
     FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE, GET_COLLECTED_TOPICS,
-    RECEIVE_PROFILE,REQUEST_TOPICS,RECEIVE_TOPICS
+    RECEIVE_PROFILE, REQUEST_TOPICS, RECEIVE_TOPICS, REQUEST_ARTICLE, RECEIVE_ARTICLE,
+    CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT
 } from '../constants/actionTypes'
 
 //Login
 export const fetchAccess = accessToken => {
-    
+
     return dispatch => {
         fetch('https://cnodejs.org/api/v1/accesstoken', {
             method: 'POST',
@@ -106,13 +107,13 @@ export const fetchProfile = (loginName) => {
 }
 
 // HomePage
-const requestTopics = tab =>({
-    type:REQUEST_TOPICS,
+const requestTopics = tab => ({
+    type: REQUEST_TOPICS,
     tab
 })
 
-const receiveTopics = (tab,topics,page,limit) =>({
-    types:RECEIVE_TOPICS,
+const receiveTopics = (tab, topics, page, limit) => ({
+    types: RECEIVE_TOPICS,
     tab,
     topics,
     page,
@@ -125,4 +126,80 @@ export const fetchTopics = (tab, page = 1, limit = 20) => {
             .then(response => response.json())
             .then(json => dispatch(receiveTopics(tab, json.data, page, limit)))
     }
+}
+
+// Article
+const requestArticle = topicId => ({
+    type: REQUEST_ARTICLE,
+    topicId
+})
+
+const receiveArticle = (topicId, article) => ({
+    type: RECEIVE_ARTICLE,
+    topicId,
+    article
+})
+
+const changeCurrentTopicId = topicId => ({
+    type: CHANGE_CURRENT_TOPICID,
+    topicId
+})
+
+export const fetchArticle = (topicId, request = true) => {
+    return dispatch => {
+        if (request) {
+            dispatch(requestArticle(topicId))
+            fetch(`https://cnodejs.org/api/v1/topic/${topicId}`)
+                .then(response => response.json())
+                .then(json => dispatch(receiveArticle(topicId, data)))
+        } else {
+            dispatch(changeCurrentTopicId(topicId))
+        }
+    }
+}
+
+export const recordArticleScrollT = (topicId, scrollT) => ({
+    type: RECORD_ARICILCE_SCROLLT,
+    topciId,
+    scrollT
+})
+
+
+export const switchSupport = (accessToken, replyId, index) => {
+    return dispatch => {
+        fetch(`https://cnodejs.org/api/v1/reply/${replyId}/ups`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `accesstoken=${accessToken}`
+        })
+            .then(response => response.json())
+            .then(json => dispatch({
+                type: SWITCH_SUPPORT,
+                replyId,
+                index,
+                success: json.success,
+                action: json.action
+            }))
+    }
+}
+
+export const fetchComment = (accessToken,topicId,content,replyId) => {
+  return dispatch => {
+    const postConent = replyId ? `accesstoken=${accessToken}&content=${content}&replyId=${replyId}`:`accesstoken=${accessToken}&content=${content}`
+    fetch(`https://cnodejs.org/api/v1/topic/${topicId}/replies`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: postConent
+        })
+    .then(response => response.json())
+    .then(json => dispatch({
+      type:FETCH_COMMENT,
+      success:json.success,
+      replyId:json.reply_id
+    }))
+  }
 }

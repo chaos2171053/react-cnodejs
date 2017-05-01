@@ -24,40 +24,46 @@ class Pull extends Component {
         let { disabled, onRefresh, max } = this.props
         let maxPull = max || MAX_DEFAULT
         let that = this
+
         this.pullhelper
-            .on('start', pulled => {
+            .on('start', function (pulled) {
                 that.setState({
-                    pulling: true,
+                    pulling: true
                 })
             })
-            .on('stepback', (pulled, next) => {
-                that.state({
+            .on('stepback', function (pulled, next) {
+                that.setState({
                     pulled: pulled
                 })
                 let nextPulled = Math.min(pulled - Math.min(pulled / 2, 10), max)
                 next(nextPulled)
             })
-            .on('step', pulled => {
-                that.state({
+            .on('step', function (pulled) {
+                that.setState({
                     pulled: pulled
                 })
             })
-            .on('pull', (pulled, next) => {
+            .on('pull', function (pulled, next) {
                 that.setState({
                     pulling: false
                 })
-                if (!onRefresh || pull < maxPull) {
+                if (!onRefresh || pulled < maxPull) {
                     next()
                     return
                 }
                 that.setState({
                     loading: true
                 })
-                next()
+                onRefresh(_ => {
+                    that.setState({
+                        loading: false
+                    })
+                    next()
+                })
             })
             .load()
         if (disabled) {
-            this.pullhelper.puse()
+            this.pullhelper.pause()
         }
     }
 
@@ -82,47 +88,49 @@ class Pull extends Component {
         let color = this.props.color || '#00BCD4'
         let style = this.props.style || {}
         return (
-      <div>
-        <div style={{
-          display:pulling ? 'block' : 'none',
-          position:'fixed',
-          top:0,
-          left:0,
-          right:0,
-          bottom:0,
-          zIndex:this.props.zIndex,
-          userSelect:'none'
-        }} />
-        <div style={Object.assign({
-          background:'white',
-          width: size,
-          height: size,
-          position:'fixed',
-          zIndex:this.props.zIndex,
-          top:-size+Math.min(pulled,maxPull),
-          left:'50%',
-          borderRadius:size/2,
-          transform:'translate(-50%,-50%)',
-          boxShadow:'0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2)',
-          userSelect:'none'
-        },style)}>
-          <MuiThemeProvider>
-            <RefreshIndicator
-                  percentage={80}
-                  size={size}
-                  left={0}
-                  top={0}
-                  color={color}
-                  loadingColor={color}
-                  status= {pulled/maxPull > 0.9999 ? 'loading':'ready'}
-                  style={{display:'inline-block',
-                          position:'relative',
-                          opacity:pulled/maxPull}}
-                />
-          </MuiThemeProvider>
-        </div>
-      </div>
-    )
+            <div>
+                <div style={{
+                    display: pulling ? 'block' : 'none',
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: this.props.zIndex,
+                    userSelect: 'none'
+                }} />
+                <div style={Object.assign({
+                    background: 'white',
+                    width: size,
+                    height: size,
+                    position: 'fixed',
+                    zIndex: this.props.zIndex,
+                    top: -size + Math.min(pulled, maxPull),
+                    left: '50%',
+                    borderRadius: size / 2,
+                    transform: 'translate(-50%,-50%)',
+                    boxShadow: '0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2)',
+                    userSelect: 'none'
+                }, style)}>
+                    <MuiThemeProvider>
+                        <RefreshIndicator
+                            percentage={80}
+                            size={size}
+                            left={0}
+                            top={0}
+                            color={color}
+                            loadingColor={color}
+                            status={pulled / maxPull > 0.9999 ? 'loading' : 'ready'}
+                            style={{
+                                display: 'inline-block',
+                                position: 'relative',
+                                opacity: pulled / maxPull
+                            }}
+                        />
+                    </MuiThemeProvider>
+                </div>
+            </div>
+        )
     }
 }
 
