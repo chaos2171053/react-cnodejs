@@ -4,7 +4,7 @@ import { fetchTopics } from '../actions/actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../actions/actions'
-import {Snackbar} from '../components/index.js'
+import Snackbar from '../components/common/Snackbar.js'
 
 const mapStateToProps = (state) => {
     const { homePage, login, profile, } = state.rootReducer
@@ -65,7 +65,7 @@ class HomePage extends Component {
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
                 <Pull zIndex={10000} size={60} max={200} color='#E91E63' onRefresh={this.onRefresh} />
-                 <Snackbar isOpened={this.state.openSnackbar} message='刷新成功'/>
+                <Snackbar isOpened={this.state.openSnackbar} message='刷新成功' />
             </div>
         )
     }

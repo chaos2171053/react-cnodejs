@@ -7,6 +7,7 @@ import {
 
 //Login
 export const fetchAccess = accessToken => {
+    
     return dispatch => {
         fetch('https://cnodejs.org/api/v1/accesstoken', {
             method: 'POST',
@@ -18,7 +19,6 @@ export const fetchAccess = accessToken => {
             .then(response => response.json())
             .then(json => {
                 if (json.success) {
-
                     dispatch(loginSucceed(json.loginname, json.id, accessToken))
                 } else {
                     dispatch(loginFailed(json.error_msg));
