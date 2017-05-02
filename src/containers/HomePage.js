@@ -6,11 +6,14 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../actions/actions'
 import Snackbar from '../components/common/Snackbar'
 import Header from '../components/Homepage/Header/Header'
+import Lists from '../components/Homepage/Lists/Lists'
+
 const mapStateToProps = (state) => {
     const { homePage, login, profile, message,article} = state.rootReducer
     const { selectedTab, tabData } = homePage
+    const unreadMessageCount = message.hasNotReadMessage.length
     const { isFetching, page, scrollT, topics } = tabData[selectedTab] || { isFetching: false, page: 0, scrollT: 0, topics: [] }
-    return { isFetching, page, scrollT, topics, selectedTab, tabData, login, profile,article }
+    return { isFetching, page, scrollT, topics, selectedTab, tabData, login, profile,article,unreadMessageCount }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -87,7 +90,9 @@ class HomePage extends Component {
         }, 2500)
     }
     render() {
-        const {selectedTab} = this.props
+         const {selectedTab,isFetching,page,topics,dispatch,article,currentRouter,login,profile,unreadMessageCount,tabData} = this.props;
+         const {fetchArticle} = this.props.actions
+        //  debugger
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
                 <Pull zIndex={10000} size={60} max={200} color='#E91E63' onRefresh={this.onRefresh} />

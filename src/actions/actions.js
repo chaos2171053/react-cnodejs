@@ -3,7 +3,7 @@ import {
     LOGIN_SUCCESS, LOGOUT, LOGIN_FAILED,
     FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE, GET_COLLECTED_TOPICS,
     RECEIVE_PROFILE, REQUEST_TOPICS, RECEIVE_TOPICS, REQUEST_ARTICLE, RECEIVE_ARTICLE,
-    CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT
+    CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT,
 } from '../constants/actionTypes'
 
 //Login
@@ -185,21 +185,23 @@ export const switchSupport = (accessToken, replyId, index) => {
     }
 }
 
-export const fetchComment = (accessToken,topicId,content,replyId) => {
-  return dispatch => {
-    const postConent = replyId ? `accesstoken=${accessToken}&content=${content}&replyId=${replyId}`:`accesstoken=${accessToken}&content=${content}`
-    fetch(`https://cnodejs.org/api/v1/topic/${topicId}/replies`, {
+export const fetchComment = (accessToken, topicId, content, replyId) => {
+    return dispatch => {
+        const postConent = replyId ? `accesstoken=${accessToken}&content=${content}&replyId=${replyId}` : `accesstoken=${accessToken}&content=${content}`
+        fetch(`https://cnodejs.org/api/v1/topic/${topicId}/replies`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: postConent
         })
-    .then(response => response.json())
-    .then(json => dispatch({
-      type:FETCH_COMMENT,
-      success:json.success,
-      replyId:json.reply_id
-    }))
-  }
+            .then(response => response.json())
+            .then(json => dispatch({
+                type: FETCH_COMMENT,
+                success: json.success,
+                replyId: json.reply_id
+            }))
+    }
 }
+
+
