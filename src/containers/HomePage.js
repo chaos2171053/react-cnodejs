@@ -7,6 +7,8 @@ import * as Actions from '../actions/actions'
 import Snackbar from '../components/common/Snackbar'
 import Header from '../components/Homepage/Header/Header'
 import Lists from '../components/Homepage/Lists/Lists'
+import CircleLoading from '../components/common/CircleLoading'
+import getSize from '../utils/getSize'
 
 const mapStateToProps = (state) => {
     const { homePage, login, profile, message,article} = state.rootReducer
@@ -88,6 +90,10 @@ class HomePage extends Component {
                 openSnackbar: false
             })
         }, 2500)
+    }
+
+    handleClick = tab => {
+        let {scrollT} = getSize()
     }
     render() {
          const {selectedTab,isFetching,page,topics,dispatch,article,currentRouter,login,profile,unreadMessageCount,tabData} = this.props;
