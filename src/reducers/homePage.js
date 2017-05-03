@@ -31,7 +31,7 @@ const tabDataItem = (state = { isFetching: false, page: 0, scrollT: 0, topics: [
         case RECORD_SCROLLT:
             return {
                 ...state,
-                scrollT: actin.scrollT
+                scrollT: action.scrollT
             }
         default:
             return state

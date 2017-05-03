@@ -3,7 +3,8 @@ import {
     LOGIN_SUCCESS, LOGOUT, LOGIN_FAILED,
     FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE, GET_COLLECTED_TOPICS,
     RECEIVE_PROFILE, REQUEST_TOPICS, RECEIVE_TOPICS, REQUEST_ARTICLE, RECEIVE_ARTICLE,
-    CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT,
+    CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT,RECORD_SCROLLT,
+    SELECT_TAB,
 } from '../constants/actionTypes'
 
 //Login
@@ -112,6 +113,17 @@ const requestTopics = tab => ({
     type: REQUEST_TOPICS,
     tab,
 })
+export const selectTab =tab => ({
+    type:SELECT_TAB,
+    tab
+})
+export const recordScrollT = (tab,scrollT) => (
+    {
+        type:RECORD_SCROLLT,
+        tab,
+        scrollT
+    }
+)
 
 const receiveTopics = (tab, topics, page, limit) => ({
     type: RECEIVE_TOPICS,

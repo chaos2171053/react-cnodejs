@@ -97,15 +97,56 @@ class HomePage extends Component {
 
     handleClick = tab => {
         let { scrollT } = getSize()
+        const  {tabData,selectedTab} = this.props;
+        const {recordScrollT,selectTab} = this.props.actions
+        recordScrollT(selectedTab,scrollT)
+        selectTab(tab)
+
+        const ua = navigator.userAgent
+        if(!tabData[tab]&& ua.indexOf('Mobile') === -1) {
+            if(scrollT>=64) {
+                recordScrollT(tab,64)
+                this.setState({
+                    scrollT:64
+                })
+            }else {
+                recordScrollT(tab,scrollT)
+                this.setState({
+                    scrollT:scrollT
+                })
+            }
+        }
+
     }
 
-    componentWillMount() {
-        const {selectedTab,page,scrollT} = this.props
+    loadMore = ()=>{
+        const {selectedTab,page,isFetching} =this.props
         const {fetchTopics} = this.props.actions
+        let ipage =page  
+        if(!isFetching) {
+            fetchTopics(selectedTab,++ipage)
+        }
+        
+    } 
+    //在DidMount生命周期获取文章列表，这样可以先渲染不需要网络请求的组件
+    componentDidMount() {
+        const {selectedTab,page,scrollT} = this.props
+        const {fetchTopics,} = this.props.actions
 
         //如果没有内容，即page为0
         if(page == 0) {
             fetchTopics(selectedTab)
+        }
+        if(scrollT) {
+            window.scrollTo(0,scrollT)
+        }
+        let lastCrollY = this.lastCrollY
+
+        window.onscroll = ()=> {
+            let {windowH,contentH,scrollT} = getSize()
+            if(windowH+ scrollT +100>contentH){
+                this.loadMore()
+            }
         }
     }
 
