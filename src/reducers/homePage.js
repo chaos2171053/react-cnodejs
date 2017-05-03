@@ -1,4 +1,6 @@
-import { SELECT_TAB, REQUEST_TOPICS, RECEIVE_TOPICS, RECORD_SCROLLT } from '../actions/actions'
+import { SELECT_TAB, REQUEST_TOPICS, RECEIVE_TOPICS, RECORD_SCROLLT } from '../constants/actionTypes'
+
+
 const selectedTab = (state, action) => {
     switch (action.type) {
         case SELECT_TAB:
@@ -42,7 +44,7 @@ const tabData = (state = {}, action) => {
         case RECORD_SCROLLT:
             return {
                 ...state,
-                [aciton.tab]: tabDataItem(state[action.tab], action)
+                [action.tab]: tabDataItem(state[action.tab], action)
             }
         default:
             return state
@@ -52,6 +54,9 @@ const tabData = (state = {}, action) => {
 
 const homePage = (state = { selectedTab: 'all', tabData: {} }, action) => {
     if (state) {
+        // if(action.type === 'REQUEST_TOPICS' ||action.type === 'RECEIVE_TOPICS') {
+        //     debugger
+        // }
         const sTab = selectedTab(state.selectedTab, action)
         const tData = tabData(state.tabData, action)
         return {
@@ -61,6 +66,21 @@ const homePage = (state = { selectedTab: 'all', tabData: {} }, action) => {
         }
     }
     return state
+
+    // switch (action.type) {
+    //     case REQUEST_TOPICS:
+    //     case RECEIVE_TOPICS:
+    //     case RECORD_SCROLLT:
+    //         const sTab = selectedTab(state.selectedTab, action)
+    //         const tData = tabData(state.tabData, action)
+    //         return {
+    //             ...state,
+    //             selectedTab: sTab,
+    //             tabData: tData
+    //         }
+    //     default:
+    //         return state
+    // }
 }
 
 export default homePage

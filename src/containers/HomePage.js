@@ -9,13 +9,16 @@ import Header from '../components/Homepage/Header/Header'
 import Lists from '../components/Homepage/Lists/Lists'
 import CircleLoading from '../components/common/CircleLoading'
 import getSize from '../utils/getSize'
+import FloatingActionButton from '../components/Homepage/FloatingActionButton/FloatingActionButton'
+import Drawer from '../components/Homepage/Drawer/Drawer'
 
 const mapStateToProps = (state) => {
-    const { homePage, login, profile, message,article} = state.rootReducer
+    const { homePage, login, profile, message, article } = state.rootReducer
     const { selectedTab, tabData } = homePage
     const unreadMessageCount = message.hasNotReadMessage.length
     const { isFetching, page, scrollT, topics } = tabData[selectedTab] || { isFetching: false, page: 0, scrollT: 0, topics: [] }
-    return { isFetching, page, scrollT, topics, selectedTab, tabData, login, profile,article,unreadMessageCount }
+    // console.log(homePage)
+    return { isFetching, page, scrollT, topics, selectedTab, tabData, login, profile, article, unreadMessageCount }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -38,27 +41,27 @@ class HomePage extends Component {
         }
     }
     tabs = [
-      {
-          title: '全部',
-          filter: 'all',
-      },
-      {
-          title: '精华',
-          filter: 'good',
-      },
-      {
-          title: '分享',
-          filter: 'share',
-      },
-      {
-          title: '问答',
-          filter: 'ask',
-      },
-      {
-          title: '招聘',
-          filter: 'job',
-      }
-  ]
+        {
+            title: '全部',
+            filter: 'all',
+        },
+        {
+            title: '精华',
+            filter: 'good',
+        },
+        {
+            title: '分享',
+            filter: 'share',
+        },
+        {
+            title: '问答',
+            filter: 'ask',
+        },
+        {
+            title: '招聘',
+            filter: 'job',
+        }
+    ]
 
     onRefresh = (next) => {
         if (!this.state.isFreshing) {
@@ -69,8 +72,8 @@ class HomePage extends Component {
                 this.openSnackbar()
                 this.setState({
                     isFreshing: false
-                }, 3000)
-            })
+                })
+            }, 3000)
         }
     }
 
@@ -93,27 +96,40 @@ class HomePage extends Component {
     }
 
     handleClick = tab => {
-        let {scrollT} = getSize()
+        let { scrollT } = getSize()
     }
+
+    componentWillMount() {
+        const {selectedTab,page,scrollT} = this.props
+        const {fetchTopics} = this.props.actions
+
+        //如果没有内容，即page为0
+        if(page == 0) {
+            fetchTopics(selectedTab)
+        }
+    }
+
     render() {
-         const {selectedTab,isFetching,page,topics,dispatch,article,currentRouter,login,profile,unreadMessageCount,tabData} = this.props;
-         const {fetchArticle} = this.props.actions
-        //  debugger
+        const { selectedTab, isFetching, page, topics, article, currentRouter, login, profile, unreadMessageCount, tabData } = this.props;
+        const { fetchArticle } = this.props.actions
+        // console.log(this.props)
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
                 <Pull zIndex={10000} size={60} max={200} color='#E91E63' onRefresh={this.onRefresh} />
-                <Snackbar isOpened={this.state.openSnackbar} message='刷新成功' />
                 <Header filter={selectedTab} onClick={this.handleClick} toggleDrawer={this.toggleDrawer}
                     fixedTop={this.state.fixedTop} unreadMessageCount={unreadMessageCount} tabs={this.tabs}>
                     {this.tabs.map((tab, index) =>
                         <div key={index}>
                             {((isFetching && page === 0) || (tab.filter !== selectedTab && !tabData[tab.filter])) && <CircleLoading />}
                             {tab.filter === selectedTab && <div style={{ opacity: (!isFetching || page >= 1) ? 1 : 0 }}>
-                                <Lists topics={topics} fetchArticle={fetchArticle} dispatch={dispatch} article={article} isFetching={isFetching} />
+                                <Lists topics={topics} fetchArticle={fetchArticle} article={article} isFetching={isFetching} />
                             </div>}
                         </div>
                     )}
                 </Header>
+                {!isFetching && <FloatingActionButton />}
+                <Drawer toggleDrawer={this.toggleDrawer} openDrawer={this.state.openDrawer} />
+                <Snackbar isOpened={this.state.openSnackbar} message='刷新成功' />
             </div>
         )
     }
