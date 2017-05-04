@@ -97,57 +97,126 @@ class HomePage extends Component {
 
     handleClick = tab => {
         let { scrollT } = getSize()
-        const  {tabData,selectedTab} = this.props;
-        const {recordScrollT,selectTab} = this.props.actions
-        recordScrollT(selectedTab,scrollT)
+        const { tabData, selectedTab } = this.props;
+        const { recordScrollT, selectTab } = this.props.actions
+        recordScrollT(selectedTab, scrollT)
         selectTab(tab)
 
         const ua = navigator.userAgent
-        if(!tabData[tab]&& ua.indexOf('Mobile') === -1) {
-            if(scrollT>=64) {
-                recordScrollT(tab,64)
+        if (!tabData[tab] && ua.indexOf('Mobile') === -1) {
+            if (scrollT >= 64) {
+                recordScrollT(tab, 64)
                 this.setState({
-                    scrollT:64
+                    scrollT: 64
                 })
-            }else {
-                recordScrollT(tab,scrollT)
+            } else {
+                recordScrollT(tab, scrollT)
                 this.setState({
-                    scrollT:scrollT
+                    scrollT: scrollT
                 })
             }
         }
 
     }
 
-    loadMore = ()=>{
-        const {selectedTab,page,isFetching} =this.props
-        const {fetchTopics} = this.props.actions
-        let ipage =page  
-        if(!isFetching) {
-            fetchTopics(selectedTab,++ipage)
+    loadMore = () => {
+        const { selectedTab, page, isFetching } = this.props
+        const { fetchTopics } = this.props.actions
+        let ipage = page
+        if (!isFetching) {// 防止滚动过快，服务端没来得及响应造成多次请求
+            fetchTopics(selectedTab, ++ipage)
         }
-        
-    } 
+
+    }
+
+    toogleDrawer = ()=>{
+        this.setState({openDrawer:!this.openDrawer})
+    }
     //在DidMount生命周期获取文章列表，这样可以先渲染不需要网络请求的组件
     componentDidMount() {
-        const {selectedTab,page,scrollT} = this.props
-        const {fetchTopics,} = this.props.actions
+        const { selectedTab, page, scrollT } = this.props
+        const { fetchTopics, } = this.props.actions
 
         //如果没有内容，即page为0
-        if(page == 0) {
+        if (page == 0) {
             fetchTopics(selectedTab)
         }
-        if(scrollT) {
-            window.scrollTo(0,scrollT)
+        if (scrollT) {
+            window.scrollTo(0, scrollT)
         }
-        let lastCrollY = this.lastCrollY
+        let lastScrollY = this.lastCrollY
 
-        window.onscroll = ()=> {
-            let {windowH,contentH,scrollT} = getSize()
-            if(windowH+ scrollT +100>contentH){
+        window.onscroll = () => {
+            let { windowH, contentH, scrollT } = getSize()
+            if (windowH + scrollT + 100 > contentH) {
                 this.loadMore()
             }
         }
+
+        const ua = navigator.userAgent
+        if (ua.indexOf('Mobile' === -1)) {
+            if (!lastScrollY || scrollT) {
+                lastScrollY = scrollT
+            }
+            let diff = scrollT - lastScrollY
+            if (diff >= 0) {
+                if (scrollT > 64 && this.state.fixedTop !== 64) {
+                    this.setState({ fixedTop: 64 })
+                }
+                if (scrollT <= 64) {
+                    this.setState({
+                        fixedTop: scrollT
+                    })
+                }
+            } else {
+                this.setState({
+                    scrollT: 0
+                })
+                if (scrollT > 64 && this.state.fixedTop !== 0) {
+                    this.setState({
+                        fixedTop: 0
+                    })
+                }
+            }
+            lastScrollY = scrollT
+        }
+    }
+    componentDidUpdate() {
+        let { windowH, contentH, scrollT } = getSize();
+        const { topics } = this.props
+        if (scrollT === 0 && this.state.scrollT > 0) {
+            window.scrollTo(0, this.state.scrollT)
+        }
+
+        // 判断内容加载后，内容的高度是否填满屏幕，若网页太高，加载一次内容的高度不能填满整个网页，则继续请求数据
+        if (topics.length > 0 && windowH + 200 > contentH) {
+            this.loadMore();
+        }
+    }
+    componentWillReceiveProps(newProps) {
+        const { topics, isFetching, selectedTab, scrollT, } = newProps;
+        const {fetchTopics} =this.props.actions
+        // 去除刷新时记住的滚动条位置
+        if (topics.length === 0 && this.props.scrollT === 0) {
+            window.scrollTo(0, 0)
+        }
+        if (!isFetching && topics.length === 0) {
+            fetchTopics(selectedTab);
+        }
+        if (selectedTab !== this.props.selectedTab) {
+            if (scrollT) {
+                window.scrollTo(0, scrollT)
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        let { scrollT } = getSize()
+        const { selectedTab } = this.props;
+        const { recordScrollT } = this.props.actions
+        recordScrollT(selectedTab, scrollT);
+        // 必须解绑事件，否则当组件再次被加载时，该事件会监听两个组件
+        window.onscroll = null;
     }
 
     render() {
