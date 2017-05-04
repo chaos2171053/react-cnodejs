@@ -20,7 +20,7 @@ const login = (state = { succeed: false }, action) => {
             }
         case LOGOUT:
             return {
-                succeed: flase
+                succeed: false
             }
         default:
             return state

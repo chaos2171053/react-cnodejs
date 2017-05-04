@@ -128,9 +128,10 @@ class HomePage extends Component {
         }
 
     }
-
-    toogleDrawer = ()=>{
-        this.setState({openDrawer:!this.openDrawer})
+    toggleDrawer = () => {
+        this.setState({
+            openDrawer: !this.state.openDrawer
+        })
     }
     //在DidMount生命周期获取文章列表，这样可以先渲染不需要网络请求的组件
     componentDidMount() {
@@ -195,7 +196,7 @@ class HomePage extends Component {
     }
     componentWillReceiveProps(newProps) {
         const { topics, isFetching, selectedTab, scrollT, } = newProps;
-        const {fetchTopics} =this.props.actions
+        const { fetchTopics } = this.props.actions
         // 去除刷新时记住的滚动条位置
         if (topics.length === 0 && this.props.scrollT === 0) {
             window.scrollTo(0, 0)
@@ -221,7 +222,7 @@ class HomePage extends Component {
 
     render() {
         const { selectedTab, isFetching, page, topics, article, currentRouter, login, profile, unreadMessageCount, tabData } = this.props;
-        const { fetchArticle } = this.props.actions
+        const { fetchArticle, logout } = this.props.actions
         // console.log(this.props)
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
@@ -238,7 +239,8 @@ class HomePage extends Component {
                     )}
                 </Header>
                 {!isFetching && <FloatingActionButton />}
-                <Drawer toggleDrawer={this.toggleDrawer} openDrawer={this.state.openDrawer} />
+                <Drawer toggleDrawer={this.toggleDrawer} openDrawer={this.state.openDrawer}
+                    {...({ login, profile, logout }) } />
                 <Snackbar isOpened={this.state.openSnackbar} message='刷新成功' />
             </div>
         )

@@ -52,7 +52,7 @@ class Header extends Component {
         return (
             <MuiThemeProvider>
                 <div className={styles.header} style={{ top: -this.props.fixedTop }}>
-                    <AppBar title="cnodejs论坛" style={{ textAlign: 'center' }} onLeftIconButtonTouchTap={this.props.toogleDrawer}
+                    <AppBar title="cnodejs论坛" style={{ textAlign: 'center' }} onLeftIconButtonTouchTap={this.props.toggleDrawer}
                         iconElementRight={this.renderAppBarRight(this.props.unreadMessageCount)} />
                     <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
                         {this.props.tabs.map((tab, i) =>
