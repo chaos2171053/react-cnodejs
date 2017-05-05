@@ -187,7 +187,6 @@ class HomePage extends Component {
         if (scrollT === 0 && this.state.scrollT > 0) {
             window.scrollTo(0, this.state.scrollT)
         }
-
         // 判断内容加载后，内容的高度是否填满屏幕，若网页太高，加载一次内容的高度不能填满整个网页，则继续请求数据
         if (topics.length > 0 && windowH + 200 > contentH) {
             this.loadMore();

@@ -4,7 +4,7 @@ import {
     FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE, GET_COLLECTED_TOPICS,
     RECEIVE_PROFILE, REQUEST_TOPICS, RECEIVE_TOPICS, REQUEST_ARTICLE, RECEIVE_ARTICLE,
     CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT,RECORD_SCROLLT,
-    SELECT_TAB,
+    SELECT_TAB,PUBLISH_TOPIC
 } from '../constants/actionTypes'
 
 //Login
@@ -220,4 +220,23 @@ export const fetchComment = (accessToken, topicId, content, replyId) => {
     }
 }
 
+// publishTopic
 
+export const fetchPublishTopic = (accessToken,tab,title,content) => {
+    return dispatch =>{
+        const postContent = `accesstoken=${accessToken}&tab=${tab}&content=${content}&title=${title}`
+        fetch(`https://cnodejs.org/api/v1/topics`,{
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: postConent
+        })
+        .then(response => response.json())
+        .then(json => dispatch({
+            type:PUBLISH_TOPIC,
+            success:json.success,
+            topicId:json.topic_id
+        }))
+    }
+}
