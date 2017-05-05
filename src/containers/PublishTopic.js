@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import * as Actions from '../actions/actions';
 import Form from '../components/PublishTopic/Form/Form'
 import { bindActionCreators } from 'redux'
-
-const mapStateToProps = (state) => {
-    const { login,publishTopic } = state.rootReducer
-    return { login, publishTopic}
+import LinkToLogin from '../components/common/LinkToLogin/LinkToLogin'
+import Dialog from '../components/common/Dialog'
+import {Link} from 'react-router-dom';
+ const mapStateToProps = (state) => {
+    const { login, publishTopic } = state.rootReducer
+    return { login, publishTopic }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -26,8 +28,8 @@ class PublishTopic extends Component {
         }
     }
     componentWillReceiveProps(newProps) {
-        const { publishTopic} = newProps;
-        const {fetchArticle} = newProps.actions
+        const { publishTopic } = newProps;
+        const { fetchArticle } = newProps.actions
         if (!this.props.publishTopic.topicId || this.props.publishTopic.topicId !== publishTopic.topicId) {
             this.setState({ isFetching: false })
             fetchArticle(publishTopic.topicId)
@@ -56,7 +58,7 @@ class PublishTopic extends Component {
         })
     }
     render() {
-        const { login,publishTopic } = this.props
+        const { login, publishTopic } = this.props
         const { fetchPublishTopic } = this.props.actions
         return (
             <div>
@@ -71,7 +73,12 @@ class PublishTopic extends Component {
                     titleErr = {this.state.titleErr}
                     contentErr ={this.state.contentErr}
                     />}
+                    {!login.succeed && <LinkToLogin />}
                 </div>
+                <Dialog isOpen={this.state.isOpen} link={`/topic/${publishTopic.topicId}`} close={this.close}>
+                    {this.state.isFetching && <div>加载中</div>}
+                    {!this.state.isFetching && <div>发送成功，去查看</div>}
+                </Dialog>
             </div>
 
         )
