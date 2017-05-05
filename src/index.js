@@ -13,7 +13,7 @@ import { Switch } from 'react-router-dom'
 import { Route } from 'react-router'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk';
-import { App, HomePage } from './containers/index'
+import { App, HomePage,PublishTopic} from './containers/index'
 
 injectTapEventPlugin();
 
@@ -57,6 +57,7 @@ ReactDOM.render(
             <App>
                 <Switch>
                     <Route exact path="/" component={HomePage} />
+                    <Route exact path='/publishTopic' component={PublishTopic}/>
                 </Switch>
             </App>
         </ConnectedRouter>

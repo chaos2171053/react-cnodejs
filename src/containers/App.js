@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../actions/actions'
+import { withRouter } from 'react-router-dom'
 
 const mapStateToProps = state => {
     const { rootReducer: { login } } = state
@@ -11,7 +12,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(Actions, dispatch)
 })
-@connect(mapStateToProps, mapDispatchToProps)
+// @connect(mapStateToProps, mapDispatchToProps)
 class App extends Component {
 
     componentWillMount() {
@@ -45,4 +46,5 @@ App.propTypes = {
     children: PropTypes.element.isRequired,
     // actions:PropTypes.object.isRequired
 };
-export default App
+// export default App
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

@@ -1,3 +1,4 @@
 import App from './App'
 import HomePage from './HomePage'
-export  {App,HomePage}
+import PublishTopic from './PublishTopic'
+export  {App,HomePage,PublishTopic}

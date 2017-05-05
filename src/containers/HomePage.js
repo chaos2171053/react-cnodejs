@@ -27,7 +27,6 @@ const mapDispatchToProps = (dispatch) => {
 
 @connect(mapStateToProps, mapDispatchToProps)
 
-
 class HomePage extends Component {
     constructor(props) {
         super(props)
@@ -219,10 +218,12 @@ class HomePage extends Component {
         // 必须解绑事件，否则当组件再次被加载时，该事件会监听两个组件
         window.onscroll = null;
     }
+    
 
     render() {
         const { selectedTab, isFetching, page, topics, article, currentRouter, login, profile, unreadMessageCount, tabData } = this.props;
         const { fetchArticle, logout } = this.props.actions
+        // const {pathname} = this.props.location
         // console.log(this.props)
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
