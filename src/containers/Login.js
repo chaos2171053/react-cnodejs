@@ -8,6 +8,7 @@ import Toggle from 'material-ui/Toggle';
 import * as Actions from '../actions/actions'
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import Profile from '../components/common/Profile/Profile'
 
 const mapStateToProps = (state) => {
     const { login, profile, article } = state.rootReducer
@@ -51,7 +52,7 @@ class Login extends Component {
 
     }
     render() {
-        let { profile, succeed, failedMessage, article,collectedTopics} = this.props
+        let { profile, succeed, failedMessage, article,collectedTopics,loginName} = this.props
         const { fetchAccess,fetchArticle } = this.props.actions
         if (loginName !== profile.loginname && window.sessionStorage.masterProfile) {
             profile = JSON.parse(window.sessionStorage.masterProfile)
