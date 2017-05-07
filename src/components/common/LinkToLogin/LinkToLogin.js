@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -11,11 +11,11 @@ const LinkToLogin = props => {
     return (
         <div className={styles.linkToLogin}>
             {
-                !masterInfo && <Redirect to='/login' className={styles.link}>
+                !masterInfo && <Link to='/login' className={styles.link}>
                     <MuiThemeProvider>
                         <FlatButton label="点击登陆" primary={true} />
                     </MuiThemeProvider>
-                </Redirect>
+                </Link>
             }
             {
                 masterInfo &&
