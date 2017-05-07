@@ -4,7 +4,7 @@ import {
     FETCH_MESSAGE, MARK_ALL_MESSAGES, REQUEST_PROFILE, GET_COLLECTED_TOPICS,
     RECEIVE_PROFILE, REQUEST_TOPICS, RECEIVE_TOPICS, REQUEST_ARTICLE, RECEIVE_ARTICLE,
     CHANGE_CURRENT_TOPICID, SWITCH_SUPPORT, FETCH_COMMENT,RECORD_SCROLLT,
-    SELECT_TAB,PUBLISH_TOPIC
+    SELECT_TAB,PUBLISH_TOPIC,RECORD_ARTICLE_SCROLLT
 } from '../constants/actionTypes'
 
 //Login
@@ -167,7 +167,7 @@ export const fetchArticle = (topicId, request = true) => {
             dispatch(requestArticle(topicId))
             fetch(`https://cnodejs.org/api/v1/topic/${topicId}`)
                 .then(response => response.json())
-                .then(json => dispatch(receiveArticle(topicId, data)))
+                .then(json => {dispatch(receiveArticle(topicId, json.data))})
         } else {
             dispatch(changeCurrentTopicId(topicId))
         }
@@ -175,8 +175,8 @@ export const fetchArticle = (topicId, request = true) => {
 }
 
 export const recordArticleScrollT = (topicId, scrollT) => ({
-    type: RECORD_ARICILCE_SCROLLT,
-    topciId,
+    type: RECORD_ARTICLE_SCROLLT,
+    topicId,
     scrollT
 })
 
@@ -218,6 +218,22 @@ export const fetchComment = (accessToken, topicId, content, replyId) => {
                 replyId: json.reply_id
             }))
     }
+}
+export const switchCollected = (isCollected,accessToken,articleId) => {
+  return dispatch => {
+    fetch(`https://cnodejs.org/api/v1/topic_collect/${isCollected?'de_collect':'collect'}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `accesstoken=${accessToken}&topic_Id=${articleId}`
+        })
+    .then(response => response.json())
+    .then(json => dispatch({
+      type:SWITCH_COLLECTED,
+      success:json.success
+    }))
+  }
 }
 
 // publishTopic

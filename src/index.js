@@ -13,7 +13,7 @@ import { Switch } from 'react-router-dom'
 import { Route } from 'react-router'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk';
-import { App, HomePage,PublishTopic,Login,Profile,Message} from './containers/index'
+import { App, HomePage,PublishTopic,Login,Profile,Message,Article} from './containers/index'
 
 injectTapEventPlugin();
 
@@ -61,6 +61,7 @@ ReactDOM.render(
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/profile' component={Profile}/>
                     <Route exact path='/message' component={Message}/>
+                    <Route path='/topic/:id' component={Article}/>
                 </Switch>
             </App>
         </ConnectedRouter>
