@@ -7,7 +7,6 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 const LinkToLogin = props => {
     const masterInfo = window.localStorage.getItem('masterInfo') ? true : false
-    debugger
     return (
         <div className={styles.linkToLogin}>
             {

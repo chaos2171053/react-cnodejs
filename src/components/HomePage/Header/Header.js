@@ -7,7 +7,7 @@ import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
-
+import { Link } from 'react-router-dom'
 class Header extends Component {
     constructor(props) {
         super(props)
@@ -41,9 +41,11 @@ class Header extends Component {
                     secondary={true}
                     badgeStyle={{ top: 3, right: 3 }}
                 >
-                    <IconButton tooltip="未读消息" style={{ padding: 0, width: 25, height: 25 }}>
-                        <NotificationsIcon style={{ color: 'white' }} />
-                    </IconButton>
+                    <Link to = '/message'>
+                        <IconButton tooltip="未读消息" style={{ padding: 0, width: 25, height: 25 }}>
+                            <NotificationsIcon style={{ color: 'white' }} />
+                        </IconButton>
+                    </Link>
                 </Badge>
             </div>
         )
