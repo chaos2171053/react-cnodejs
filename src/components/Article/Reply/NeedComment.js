@@ -9,7 +9,7 @@ class NeedComment extends Component{
 		const {login,currentTopicId,pHeight,recordArticleScrollT,fetchComment,} = this.props
 		const sHeight = pHeight ? pHeight : 0 
 		const style = pHeight ? {overflow:'hidden',minHeight:pHeight} : {overflow:'hidden',height:0}
-		const tail = '来自chaos的小霸王</a></p>'
+		const tail = '来自chaos的小霸王'
 		if(login.loginId){
 			return (<div style={style} className={styles.textarea}>
 						<MuiThemeProvider>

@@ -52,8 +52,8 @@ class Login extends Component {
 
     }
     render() {
-        let { profile, succeed, failedMessage, article,collectedTopics,loginName} = this.props
-        const { fetchAccess,fetchArticle } = this.props.actions
+        let { profile, succeed, failedMessage, article, collectedTopics, loginName } = this.props
+        const { fetchAccess, fetchArticle } = this.props.actions
         if (loginName !== profile.loginname && window.sessionStorage.masterProfile) {
             profile = JSON.parse(window.sessionStorage.masterProfile)
             collectedTopics = profile.collectedTopics
@@ -67,20 +67,22 @@ class Login extends Component {
                         !masterInfo && !succeed &&
                         <MuiThemeProvider>
                             <div>
-                                <TextField hintText="请输入Access Token" floatingLabelText="请输入Access Token" ref='input' />
-                            </div>
-                            <div style={{ display: 'inline-block', margin: '0 auto' }}>
-                                <Toggle label='记住登陆信息' defaultToogled={true} onToggle={this.onToggle} style={{ maxWidth: 200 }} />
-                            </div>
-                            <div>
-                                <RaisedButton label='登录' primary={true} onClick={() => {
-                                    const input = this.refs.input.input.value
-                                    if (!input.trim()) {
-                                        return null;
-                                    }
-                                    fetchAccess(input);
-                                }}
-                                />
+                                <div>
+                                    <TextField hintText="请输入Access Token" floatingLabelText="请输入Access Token" ref='input' />
+                                </div>
+                                <div style={{ display: 'inline-block', margin: '0 auto' }}>
+                                    <Toggle label='记住登陆信息' defaultToogled={true} onToggle={this.onToggle} style={{ maxWidth: 200 }} />
+                                </div>
+                                <div>
+                                    <RaisedButton label='登录' primary={true} onClick={() => {
+                                        const input = this.refs.input.input.value
+                                        if (!input.trim()) {
+                                            return null;
+                                        }
+                                        fetchAccess(input);
+                                    }}
+                                    />
+                                </div>
                             </div>
                         </MuiThemeProvider>
                     }
@@ -92,8 +94,8 @@ class Login extends Component {
                     }
                     {succeed && profile.loginname &&
                         <div>
-                            <Profile collectedTopics= {collectedTopics} profile = {profile}
-                                fetchArticle = {fetchArticle} article = {article}/>
+                            <Profile collectedTopics={collectedTopics} profile={profile}
+                                fetchArticle={fetchArticle} article={article} />
                         </div>}
                 </div>
             </div>

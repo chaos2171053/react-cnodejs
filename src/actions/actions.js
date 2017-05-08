@@ -235,7 +235,6 @@ export const switchCollected = (isCollected,accessToken,articleId) => {
     }))
   }
 }
-
 // publishTopic
 
 export const fetchPublishTopic = (accessToken,tab,title,content) => {

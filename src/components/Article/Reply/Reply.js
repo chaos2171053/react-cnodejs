@@ -19,6 +19,38 @@ class Reply extends Component {
             openDialog: false
         }
     }
+	supportState = (replies,login) => {
+		let isSupported = replies.map(reply => {
+			return reply.ups.some(up => up === login.loginId)
+		})
+		let supportNum = replies.map(reply => reply.ups.length)
+		this.setState({isSupported,supportNum})
+	}
+	closeDialog = () => {
+		this.setState({
+			openDialog:false
+		})
+	}
+	componentWillMount(){
+		const {replies,login} = this.props
+		this.supportState(replies,login)
+	}
+
+	componentWillReceiveProps(newProps){	
+		const {switchSupportInfo,replies,login,isCommented,currentTopicId,fetchArticle} = newProps
+		if(this.state.height.length !== 0){
+			this.setState({
+				height:[],
+				name:[]
+			})
+		}
+		if(replies.length !== this.props.replies.length){
+			this.supportState(replies,login)
+		}
+		if(isCommented && this.props.isCommented !== isCommented){
+			fetchArticle(currentTopicId)
+		}
+	}
     render(){
         let {switchSupport,fetchComment,profile,replies,login,switchSupportInfo,currentTopicId,fetchProfile,recordArticleScrollT}= this.props
 

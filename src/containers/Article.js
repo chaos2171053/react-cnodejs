@@ -60,7 +60,7 @@ class Article extends Component {
 
     render() {
         let { isFetching, article, currentTopicId, login, switchSupportInfo, isCommented, collectedTopics, profile } = this.props;
-        const { switchCollected, fetchProfile,switchSupport,fetchComment,recordArticleScrollT} = this.props.actions
+        const { fetchArticle,switchCollected, fetchProfile,switchSupport,fetchComment,recordArticleScrollT} = this.props.actions
         return (
             <div className={this.state.fadeIn ? 'fade-in' : ''}>
                 <Header isFetching={isFetching} title='详情' showBack={true} />
@@ -69,7 +69,7 @@ class Article extends Component {
                     <div>
                         <Content {...({ switchCollected, article, fetchProfile, login, collectedTopics, profile }) } />
                         <Reply replies={article.replies}
-                            {...({ fetchComment,switchSupport,recordArticleScrollT,login, switchSupportInfo, fetchProfile,currentTopicId, profile, isCommented }) } />
+                            {...({ fetchArticle,fetchComment,switchSupport,recordArticleScrollT,login, switchSupportInfo, fetchProfile,currentTopicId, profile, isCommented }) } />
                     </div>
                 }
             </div>
