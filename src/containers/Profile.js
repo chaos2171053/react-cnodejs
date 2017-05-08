@@ -24,7 +24,7 @@ class Profile extends Component {
         return (
             <div>
                 <div>
-                    <Header title='详情' showBack={true} />
+                    <Header title='个人信息' showBack={true} />
                     {profile.loginname &&
                         <div style={{ marginTop: 100 }}>
                             <ProfileComponent  {...({ ...this.props, fetchArticle }) } />

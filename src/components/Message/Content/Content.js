@@ -33,6 +33,11 @@ class Content extends Component {
             isUpdating: true
         })
     }
+    close = () => {
+		this.setState({
+			isOpen:false
+		})
+	}
     render() {
         const { hasNotReadMessage, hasReadMessage, article, fetchArticle } = this.props
         return (

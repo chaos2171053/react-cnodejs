@@ -184,13 +184,16 @@ class HomePage extends Component {
     componentDidUpdate() {
         let { windowH, contentH, scrollT } = getSize();
         const { topics } = this.props
+    
         if (scrollT === 0 && this.state.scrollT > 0) {
             window.scrollTo(0, this.state.scrollT)
         }
+
         // 判断内容加载后，内容的高度是否填满屏幕，若网页太高，加载一次内容的高度不能填满整个网页，则继续请求数据
         if (topics.length > 0 && windowH + 200 > contentH) {
             this.loadMore();
         }
+       
     }
     componentWillReceiveProps(newProps) {
         const { topics, isFetching, selectedTab, scrollT, } = newProps;
@@ -217,7 +220,7 @@ class HomePage extends Component {
         // 必须解绑事件，否则当组件再次被加载时，该事件会监听两个组件
         window.onscroll = null;
     }
-    
+
 
     render() {
         const { selectedTab, isFetching, page, topics, article, currentRouter, login, profile, unreadMessageCount, tabData } = this.props;
@@ -233,7 +236,7 @@ class HomePage extends Component {
                         <div key={index}>
                             {((isFetching && page === 0) || (tab.filter !== selectedTab && !tabData[tab.filter])) && <CircleLoading />}
                             {tab.filter === selectedTab && <div style={{ opacity: (!isFetching || page >= 1) ? 1 : 0 }}>
-                                <Lists topics={topics} fetchArticle={fetchArticle} article={article} isFetching={isFetching} />
+                                <Lists ref='lists' topics={topics} fetchArticle={fetchArticle} article={article} isFetching={isFetching} />
                             </div>}
                         </div>
                     )}

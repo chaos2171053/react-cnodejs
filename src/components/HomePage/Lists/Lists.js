@@ -24,7 +24,8 @@ const Lists = props => {
                         easing='ease-out' duration='400' staggerDelayBy='40' staggerDurationBy='4'>
                         {
                             topics.map((topic, i) =>
-                                <Link key={i} to={`/topic/${topic.id}`} className={styles.link} onClick={() => {
+                                {
+                                    return(<Link key={i} to={`/topic/${topic.id}`} className={styles.link} onClick={() => {
                                     if (!article[topic.id]) {
                                         fetchArticle(topic.id)
                                     } else if (article.currentTopId !== topic.id) {
@@ -49,8 +50,12 @@ const Lists = props => {
                                         }
                                     />
                                     <Divider inset={true} />
-                                </Link>
-                            )}
+                                </Link>)}
+                                // {
+                                //     return(<div>{i}</div>)
+                                // }
+                            )
+                        }
                     </FlipMove>
                 </List>
             </MuiThemeProvider>

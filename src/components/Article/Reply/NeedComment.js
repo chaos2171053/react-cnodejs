@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import getSize from '../../../utils/getSize'
+import LinkToLogin from '../../common/LinkToLogin/LinkToLogin'
 class NeedComment extends Component{
 	render(){
 		const {login,currentTopicId,pHeight,recordArticleScrollT,fetchComment,} = this.props

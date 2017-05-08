@@ -35,7 +35,7 @@ class Header extends Component {
     }
     renderAppBarRight(unreadMessageCount) {
         return (
-            <div>
+            <div style = {{marginTop:-8}}>
                 <Badge
                     badgeContent={unreadMessageCount}
                     secondary={true}

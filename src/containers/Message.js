@@ -31,8 +31,8 @@ class Message extends Component {
         return (
             <div>
                 <div>
-                    <Header title='详情' />
-                    <div style={{ marginTop: 0 }}>
+                    <Header title='消息' />
+                    <div style={{ marginTop: 64 }}>
                         {login.succeed && <Content {...message} {...({markAllMessages, fetchArticle, article, login }) } />}
                         {!login.succeed && <LinkToLogin />}
                     </div>

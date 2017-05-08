@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom'
 const style = {
     position: 'fixed',
     bottom: 50,
-    right: 50
+    right: 50,
+    zIndex:50
 };
 
 const FloatActionButton = () => (
