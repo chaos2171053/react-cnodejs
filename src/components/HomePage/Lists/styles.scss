@@ -1,10 +1,20 @@
-.lists {
-    position: relative;
-    margin-top: 100px;
+.lists{
+  position: relative;
+	margin-top: 100px;
 }
-.link {
-    display: block;
+.li{
+  position: relative;
+  top:0;
+	height: 61px;
+	padding: 5px 15px;
+  border-bottom: 1px solid #ccc;
+ 
 }
+
+.link{
+  display: block;
+}
+
 .text{
   margin: 0 0 10px;
   span{
@@ -22,7 +32,6 @@
     white-space: nowrap;
   }
 }
-
 .spinner {
   margin: 24px auto;
   width: 100%;

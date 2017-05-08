@@ -134,57 +134,58 @@ class HomePage extends Component {
     }
     //在DidMount生命周期获取文章列表，这样可以先渲染不需要网络请求的组件
     componentDidMount() {
-        const { selectedTab, page, scrollT } = this.props
-        const { fetchTopics, } = this.props.actions
-
-        //如果没有内容，即page为0
-        if (page == 0) {
-            fetchTopics(selectedTab)
+        const { selectedTab, page, scrollT} = this.props;
+        const {fetchTopics} = this.props.actions
+        if (page === 0) {
+            fetchTopics(selectedTab);
         }
         if (scrollT) {
-            window.scrollTo(0, scrollT)
+            window.scrollTo(0, scrollT);
         }
-        let lastScrollY = this.lastCrollY
-
+        let lastScrollY = this.lastScrollY
         window.onscroll = () => {
             let { windowH, contentH, scrollT } = getSize()
             if (windowH + scrollT + 100 > contentH) {
                 this.loadMore()
             }
-        }
 
-        const ua = navigator.userAgent
-        if (ua.indexOf('Mobile' === -1)) {
-            if (!lastScrollY || scrollT) {
+
+            // 由于下面的操作比较费cpu,所以进行判断是否为手机端
+            const ua = navigator.userAgent;
+            if (ua.indexOf('Mobile') === -1) {
+                if (!lastScrollY || !scrollT) {
+                    lastScrollY = scrollT
+                }
+                let diff = scrollT - lastScrollY
+                if (diff >= 0) {
+                    if (scrollT > 64 && this.state.fixedTop !== 64) {
+                        this.setState({
+                            fixedTop: 64
+                        })
+                    }
+                    if (scrollT <= 64) {
+                        this.setState({
+                            fixedTop: scrollT
+                        })
+                    }
+                } else {
+                    this.setState({
+                        scrollT: 0
+                    })
+                    if (scrollT > 64 && this.state.fixedTop !== 0) {
+                        this.setState({
+                            fixedTop: 0
+                        })
+                    }
+                }
                 lastScrollY = scrollT
             }
-            let diff = scrollT - lastScrollY
-            if (diff >= 0) {
-                if (scrollT > 64 && this.state.fixedTop !== 64) {
-                    this.setState({ fixedTop: 64 })
-                }
-                if (scrollT <= 64) {
-                    this.setState({
-                        fixedTop: scrollT
-                    })
-                }
-            } else {
-                this.setState({
-                    scrollT: 0
-                })
-                if (scrollT > 64 && this.state.fixedTop !== 0) {
-                    this.setState({
-                        fixedTop: 0
-                    })
-                }
-            }
-            lastScrollY = scrollT
         }
+        // console.log('componentDidMount',getSize().scrollT)
     }
     componentDidUpdate() {
         let { windowH, contentH, scrollT } = getSize();
         const { topics } = this.props
-    console.log(windowH,contentH)
         if (scrollT === 0 && this.state.scrollT > 0) {
             window.scrollTo(0, this.state.scrollT)
         }
@@ -193,7 +194,7 @@ class HomePage extends Component {
         if (topics.length > 0 && windowH + 200 > contentH) {
             this.loadMore();
         }
-       
+
     }
     componentWillReceiveProps(newProps) {
         const { topics, isFetching, selectedTab, scrollT, } = newProps;
@@ -236,7 +237,7 @@ class HomePage extends Component {
                         <div key={index}>
                             {((isFetching && page === 0) || (tab.filter !== selectedTab && !tabData[tab.filter])) && <CircleLoading />}
                             {tab.filter === selectedTab && <div style={{ opacity: (!isFetching || page >= 1) ? 1 : 0 }}>
-                                <Lists ref='lists' topics={topics} fetchArticle={fetchArticle} article={article} isFetching={isFetching} />
+                                <Lists topics={topics} fetchArticle={fetchArticle} article={article} isFetching={isFetching} />
                             </div>}
                         </div>
                     )}

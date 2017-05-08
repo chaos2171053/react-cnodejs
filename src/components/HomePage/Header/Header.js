@@ -70,6 +70,7 @@ class Header extends Component {
     //     )
     // }
     render() {
+        console.log(this.props.fixedTop)
         return (
             <MuiThemeProvider>
                 <div>
