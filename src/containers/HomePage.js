@@ -184,7 +184,7 @@ class HomePage extends Component {
     componentDidUpdate() {
         let { windowH, contentH, scrollT } = getSize();
         const { topics } = this.props
-    
+    console.log(windowH,contentH)
         if (scrollT === 0 && this.state.scrollT > 0) {
             window.scrollTo(0, this.state.scrollT)
         }

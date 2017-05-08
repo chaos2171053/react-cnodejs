@@ -35,13 +35,13 @@ class Header extends Component {
     }
     renderAppBarRight(unreadMessageCount) {
         return (
-            <div style = {{marginTop:-8}}>
+            <div style={{ marginTop: -8 }}>
                 <Badge
                     badgeContent={unreadMessageCount}
                     secondary={true}
                     badgeStyle={{ top: 3, right: 3 }}
                 >
-                    <Link to = '/message'>
+                    <Link to='/message'>
                         <IconButton tooltip="未读消息" style={{ padding: 0, width: 25, height: 25 }}>
                             <NotificationsIcon style={{ color: 'white' }} />
                         </IconButton>
@@ -50,18 +50,49 @@ class Header extends Component {
             </div>
         )
     }
+    // render() {
+    //     return (
+    //         <MuiThemeProvider>
+    //             <div className={styles.header} style={{ top: -this.props.fixedTop }}>
+    //                 <AppBar title="CNode-专业中文社区" style={{ textAlign: 'center' }} onLeftIconButtonTouchTap={this.props.toggleDrawer}
+    //                     iconElementRight={this.renderAppBarRight(this.props.unreadMessageCount)} />
+    //                 <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
+    //                     {this.props.tabs.map((tab, i) =>
+    //                         <Tab key={i} label={tab.title} value={i}>
+    //                         </Tab>
+    //                     )}
+    //                 </Tabs>
+    //                 <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange}>
+    //                     {this.props.children}
+    //                 </SwipeableViews>
+    //             </div>
+    //         </MuiThemeProvider>
+    //     )
+    // }
     render() {
         return (
             <MuiThemeProvider>
-                <div className={styles.header} style={{ top: -this.props.fixedTop }}>
-                    <AppBar title="CNode-专业中文社区" style={{ textAlign: 'center' }} onLeftIconButtonTouchTap={this.props.toggleDrawer}
-                        iconElementRight={this.renderAppBarRight(this.props.unreadMessageCount)} />
-                    <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
-                        {this.props.tabs.map((tab, i) =>
-                            <Tab key={i} label={tab.title} value={i}>
-                            </Tab>
-                        )}
-                    </Tabs>
+                <div>
+                    <div className={styles.header} style={{ top: -this.props.fixedTop }}>
+                        <AppBar title={<p style={{ textAlign: 'center' }}>CNodeJS-专业中文社区</p>} onLeftIconButtonTouchTap={this.props.toggleDrawer}
+                            iconElementRight={<div style={{ marginTop: -8 }}>
+                                <Badge badgeContent={this.props.unreadMessageCount} secondary={true} style={{ top: 3 }}>
+                                    <Link to={`/message`}>
+                                        <IconButton tooltip="未读消息" style={{ padding: 0, width: 25, height: 25 }}>
+                                            <div>
+                                                <NotificationsIcon style={{ color: 'white' }} />
+                                            </div>
+                                        </IconButton>
+                                    </Link>
+                                </Badge>
+                            </div>} />
+                        <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
+                            {this.props.tabs.map((tab, i) =>
+                                <Tab key={i} label={tab.title} value={i}>
+                                </Tab>
+                            )}
+                        </Tabs>
+                    </div>
                     <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange}>
                         {this.props.children}
                     </SwipeableViews>
