@@ -12,7 +12,7 @@ let BowerWebpackPlugin = require('bower-webpack-plugin');
 let config = Object.assign({}, baseConfig, {
   entry: path.join(__dirname, '../src/index'),
   cache: false,
-  devtool: 'sourcemap',
+  devtool: 'flase',
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
@@ -21,7 +21,17 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      output: {
+        comments: false,  // remove all comments
+      },
+      compress: {
+        warnings: false,
+        // 去掉debugger和console
+        drop_debugger: true,
+        drop_console: true
+      }
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.NoErrorsPlugin()
@@ -35,7 +45,7 @@ config.module.loaders.push({
   loader: 'babel',
   include: [].concat(
     config.additionalPaths,
-    [ path.join(__dirname, '/../src') ]
+    [path.join(__dirname, '/../src')]
   )
 });
 
