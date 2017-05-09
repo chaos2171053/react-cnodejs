@@ -75,7 +75,7 @@ class Header extends Component {
             <MuiThemeProvider>
                 <div>
                     <div className={styles.header} style={{ top: -this.props.fixedTop }}>
-                        <AppBar title={<p style={{ textAlign: 'center' }}>CNodeJS-专业中文社区</p>} onLeftIconButtonTouchTap={this.props.toggleDrawer}
+                        <AppBar title={<p style={{ textAlign: 'center' }}>CNodeJS</p>} onLeftIconButtonTouchTap={this.props.toggleDrawer}
                             iconElementRight={<div style={{ marginTop: -8 }}>
                                 <Badge badgeContent={this.props.unreadMessageCount} secondary={true} style={{ top: 3 }}>
                                     <Link to={`/message`}>
